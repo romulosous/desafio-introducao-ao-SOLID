@@ -23,7 +23,6 @@ class UsersRepository implements IUsersRepository {
     Object.assign(user, {
       name,
       email,
-      admin: false,
       created_at: new Date(),
       updated_at: new Date(),
     });
@@ -35,9 +34,6 @@ class UsersRepository implements IUsersRepository {
 
   findById(id: string): User | undefined {
     const user = this.users.find((user) => user.id === id);
-    if (!user) {
-      throw new Error("User not Find!");
-    }
     return user;
   }
 
@@ -47,11 +43,13 @@ class UsersRepository implements IUsersRepository {
   }
 
   turnAdmin(receivedUser: User): User {
-    const user = Object.assign(receivedUser, {
-      admin: true,
-      update_at: new Date(),
-    });
-    return user;
+    const updatedUser = this.users.find((user) => user === receivedUser);
+    // const user = Object.assign(receivedUser, {
+    //   admin: true,
+    //   update_at: new Date(),
+    // });
+    updatedUser.admin = true;
+    return updatedUser;
   }
 
   list(): User[] {
